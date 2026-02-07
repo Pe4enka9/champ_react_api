@@ -3,7 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\BoardController;
-use App\Http\Controllers\BoardObjectController;
+use App\Http\Controllers\ObjectController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [RegisterController::class, 'register']);
@@ -19,10 +19,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/boards/{board}/make-private', [BoardController::class, 'makePrivate']);
     Route::post('/boards/{board}/like', [BoardController::class, 'like']);
 
-    Route::apiResource('/boards/{board}/objects', BoardObjectController::class)
-        ->only(['index', 'store', 'update', 'destroy']);
-    Route::post('/boards/{board}/objects/{object}/focus', [BoardObjectController::class, 'focus']);
-    Route::post('/boards/{board}/objects/{object}/blur', [BoardObjectController::class, 'blur']);
+    Route::get('/boards/{board}/objects', [ObjectController::class, 'index']);
+    Route::patch('/boards/{board}/objects', [ObjectController::class, 'update']);
 });
 
 Route::get('/board/{board:hash}', [BoardController::class, 'show']);

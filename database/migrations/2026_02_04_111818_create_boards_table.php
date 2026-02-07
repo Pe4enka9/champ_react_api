@@ -17,6 +17,7 @@ return new class extends Migration
             $table->boolean('is_public')->default(false);
             $table->unsignedInteger('width')->default(1600);
             $table->unsignedInteger('height')->default(900);
+            $table->json('objects')->nullable();
             $table->timestamps();
         });
     }

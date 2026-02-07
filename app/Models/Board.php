@@ -15,11 +15,11 @@ use Illuminate\Support\Collection;
  * @property boolean $is_public
  * @property int $width
  * @property int $height
+ * @property array $objects
  *
  * @property-read User $owner
  * @property-read Collection<BoardAccess> $boardAccesses
  * @property-read Collection<BoardLike> $boardLikes
- * @property-read Collection<BoardObject> $boardObjects
  */
 class Board extends Model
 {
@@ -27,6 +27,7 @@ class Board extends Model
 
     protected $casts = [
         'is_public' => 'boolean',
+        'objects' => 'array',
     ];
 
     public function owner(): BelongsTo
@@ -42,11 +43,6 @@ class Board extends Model
     public function boardLikes(): HasMany
     {
         return $this->hasMany(BoardLike::class, 'board_id');
-    }
-
-    public function boardObjects(): HasMany
-    {
-        return $this->hasMany(BoardObject::class, 'board_id');
     }
 
     public function generateHash(): string
