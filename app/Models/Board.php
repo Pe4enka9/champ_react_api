@@ -18,8 +18,8 @@ use Illuminate\Support\Collection;
  * @property array $objects
  *
  * @property-read User $owner
- * @property-read Collection<BoardAccess> $boardAccesses
- * @property-read Collection<BoardLike> $boardLikes
+ * @property-read Collection<BoardAccess> $accesses
+ * @property-read Collection<BoardLike> $likes
  */
 class Board extends Model
 {
@@ -35,21 +35,13 @@ class Board extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function boardAccesses(): HasMany
+    public function accesses(): HasMany
     {
         return $this->hasMany(BoardAccess::class, 'board_id');
     }
 
-    public function boardLikes(): HasMany
+    public function likes(): HasMany
     {
         return $this->hasMany(BoardLike::class, 'board_id');
-    }
-
-    public function generateHash(): string
-    {
-        $hash = uniqid();
-        $this->update(['hash' => $hash]);
-
-        return $hash;
     }
 }
