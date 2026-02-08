@@ -9,9 +9,6 @@ use Illuminate\Support\Facades\Hash;
 
 class LoginService
 {
-    /**
-     * @throws AuthenticationException
-     */
     public function __invoke(LoginDto $dto): string
     {
         $user = User::where('email', $dto->email)->first();

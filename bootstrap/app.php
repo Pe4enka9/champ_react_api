@@ -6,6 +6,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
+use Symfony\Component\Finder\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -26,6 +27,10 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $exceptions->render(function (AuthenticationException $exception, Request $request) {
             return response()->json(status: 401);
+        });
+
+        $exceptions->render(function (AccessDeniedException $exception, Request $request) {
+            return response()->json(status: 403);
         });
 
         $exceptions->render(function (UniqueConstraintViolationException $exception, Request $request) {

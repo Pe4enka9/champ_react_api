@@ -5,12 +5,24 @@ namespace App\Services;
 use App\Dtos\ObjectDto;
 use App\Events\ObjectChanged;
 use App\Models\Board;
+use App\Models\User;
 use Illuminate\Support\Str;
 
 class ObjectService
 {
-    public function updateObjects(ObjectDto $dto, Board $board): void
+    public function __construct(
+        private BoardService $boardService,
+    )
     {
+    }
+
+    public function updateObjects(
+        Board     $board,
+        User      $user,
+        ObjectDto $dto,
+    ): void
+    {
+        $this->boardService->checkAccess($board, $user);
         $objects = $board->objects ?? [];
 
         if ($dto->deleted && $dto->id) {
@@ -30,7 +42,10 @@ class ObjectService
     }
 
     // Удаление объекта
-    private function delete(array $objects, string $id): array
+    private function delete(
+        array  $objects,
+        string $id,
+    ): array
     {
         return array_values(
             array_filter($objects, fn($obj) => $obj['id'] !== $id)
@@ -38,7 +53,10 @@ class ObjectService
     }
 
     // Обновление объекта
-    private function update(array $objects, ObjectDto $dto): array
+    private function update(
+        array     $objects,
+        ObjectDto $dto,
+    ): array
     {
         foreach ($objects as $key => $obj) {
             if ($obj['id'] === $dto->id) {
@@ -60,7 +78,10 @@ class ObjectService
     }
 
     // Создание объекта
-    private function create(array $objects, ObjectDto $dto): array
+    private function create(
+        array     $objects,
+        ObjectDto $dto,
+    ): array
     {
         $objects[] = [
             'id' => $dto->id ?? Str::uuid()->toString(),

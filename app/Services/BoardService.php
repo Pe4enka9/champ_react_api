@@ -12,7 +12,10 @@ use Symfony\Component\Finder\Exception\AccessDeniedException;
 class BoardService
 {
     // Создание доски
-    public function create(User $user, BoardDto $dto): void
+    public function create(
+        User     $user,
+        BoardDto $dto,
+    ): void
     {
         $board = Board::create([
             'name' => $dto->name,
@@ -23,14 +26,22 @@ class BoardService
     }
 
     // Предоставить доступ к доске пользователю по email
-    public function access(AccessDto $dto, Board $board): void
+    public function access(
+        Board     $board,
+        User      $user,
+        AccessDto $dto,
+    ): void
     {
+        $this->checkOwner($board, $user);
         $user = User::where('email', $dto->email)->firstOrFail();
         $board->accesses()->create(['user_id' => $user->id]);
     }
 
     // Проверка на владельца доски
-    private function checkOwner(User $user, Board $board): void
+    private function checkOwner(
+        Board $board,
+        User  $user,
+    ): void
     {
         if ($board->owner_id !== $user->id) {
             throw new AccessDeniedException();
@@ -38,9 +49,12 @@ class BoardService
     }
 
     // Сделать доску публичной
-    public function makePublic(User $user, Board $board): string
+    public function makePublic(
+        Board $board,
+        User  $user,
+    ): string
     {
-        $this->checkOwner($user, $board);
+        $this->checkOwner($board, $user);
         $hash = Str::random(32);
 
         $board->update([
@@ -52,13 +66,27 @@ class BoardService
     }
 
     // Сделать доску приватной
-    public function makePrivate(User $user, Board $board): void
+    public function makePrivate(
+        Board $board,
+        User  $user,
+    ): void
     {
-        $this->checkOwner($user, $board);
+        $this->checkOwner($board, $user);
 
         $board->update([
             'hash' => null,
             'is_public' => false,
         ]);
+    }
+
+    // Проверка доступа
+    public function checkAccess(
+        Board $board,
+        User  $user,
+    ): void
+    {
+        if (!$board->accesses()->where('user_id', $user->id)->exists()) {
+            throw new AccessDeniedException();
+        }
     }
 }

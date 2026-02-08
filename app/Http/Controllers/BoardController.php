@@ -33,7 +33,10 @@ class BoardController extends Controller
     }
 
     // Создание доски
-    public function store(Request $request, BoardDto $dto): JsonResponse
+    public function store(
+        BoardDto $dto,
+        Request  $request,
+    ): JsonResponse
     {
         $this->boardService->create($request->user(), $dto);
 
@@ -41,25 +44,35 @@ class BoardController extends Controller
     }
 
     // Предоставить доступ к доске пользователю по email
-    public function access(AccessDto $dto, Board $board): JsonResponse
+    public function access(
+        Board     $board,
+        AccessDto $dto,
+        Request   $request,
+    ): JsonResponse
     {
-        $this->boardService->access($dto, $board);
+        $this->boardService->access($board, $request->user(), $dto);
 
         return response()->json(['success' => true], 201);
     }
 
     // Сделать доску публичной
-    public function makePublic(Request $request, Board $board): JsonResponse
+    public function makePublic(
+        Board   $board,
+        Request $request,
+    ): JsonResponse
     {
-        $hash = $this->boardService->makePublic($request->user(), $board);
+        $hash = $this->boardService->makePublic($board, $request->user());
 
         return response()->json(['hash' => $hash]);
     }
 
     // Сделать доску приватной
-    public function makePrivate(Request $request, Board $board): JsonResponse
+    public function makePrivate(
+        Board   $board,
+        Request $request,
+    ): JsonResponse
     {
-        $this->boardService->makePrivate($request->user(), $board);
+        $this->boardService->makePrivate($board, $request->user());
 
         return response()->json(['success' => true]);
     }
@@ -73,21 +86,33 @@ class BoardController extends Controller
     }
 
     // Доступ к доске
-    public function show(Board $board): JsonResponse
+    public function show(
+        Board   $board,
+        Request $request,
+    ): JsonResponse
     {
+        $this->boardService->checkAccess($board, $request->user());
+
         return response()->json(new BoardResource($board));
     }
 
     // Обновление объектов доски
-    public function update(ObjectDto $dto, Board $board): JsonResponse
+    public function update(
+        Board     $board,
+        ObjectDto $dto,
+        Request   $request,
+    ): JsonResponse
     {
-        $this->objectService->updateObjects($dto, $board);
+        $this->objectService->updateObjects($board, $request->user(), $dto);
 
         return response()->json(ObjectResource::collection($board->objects));
     }
 
     // Поставить лайк доске
-    public function like(Request $request, Board $board): JsonResponse
+    public function like(
+        Board   $board,
+        Request $request,
+    ): JsonResponse
     {
         $board->likes()->create(['user_id' => $request->user()->id]);
 
