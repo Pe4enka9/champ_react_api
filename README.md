@@ -1,59 +1,528 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Чемпионат 2026 - API для модуля В
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Документация
 
-## About Laravel
+* Попытка доступа без авторизации (401 Unauthorized):
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+```json
+[]
+```
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+* Ресурс не существует (404 Not Found):
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+```json
+[]
+```
 
-## Learning Laravel
+* Попытка нарушения уникальности (409 Conflict):
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+```json
+[]
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+* Попытка доступа к запрещенному ресурсу (403 Forbidden):
 
-## Laravel Sponsors
+```json
+[]
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+* Ошибки валидации (422 Unprocessable Entity):
 
-### Premium Partners
+```json
+{
+    "message": "Invalid fields",
+    "errors": {
+        "name": [
+            "The email field is required."
+        ]
+    }
+}
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### Регистрация
 
-## Contributing
+#### Запрос
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+* Метод: **POST**
+* Путь: **/register**
+* Заголовки:
+    * Content-Type: application/json
+* Тело:
 
-## Code of Conduct
+```json
+{
+    "email": "test@mail.ru",
+    "name": "Test",
+    "password": "password1_"
+}
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Все поля обязательны.
 
-## Security Vulnerabilities
+* email - валидный, уникальный.
+* имя - только латиница.
+* пароль - минимум 8 символов, должен содержать хотя бы одну цифру и один спецсимвол.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+#### Ответ
 
-## License
+* Успешный ответ (201 Created):
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```json
+{
+    "success": true
+}
+```
+
+### Авторизация
+
+#### Запрос
+
+* Метод: **POST**
+* Путь: **/login**
+* Заголовки:
+    * Content-Type: application/json
+* Тело:
+
+```json
+{
+    "email": "test@mail.ru",
+    "password": "password1_"
+}
+```
+
+Все поля обязательны.
+
+#### Ответ
+
+* Успешный ответ (200 OK):
+
+```json
+{
+    "token": "1|WbNEumC0IFtou8tqYdtQ1QxhSdOqjGBASArpzqWOe2a38037"
+}
+```
+
+* Некорректные данные (401 Unauthorized):
+
+```json
+[]
+```
+
+### Получение публичных досок
+
+#### Запрос
+
+* Метод: **GET**
+* Путь: **/boards**
+
+#### Ответ
+
+* Успешный ответ (200 OK):
+
+```json
+[
+    {
+        "id": 1,
+        "name": "Board 1",
+        "owner": {
+            "id": 1,
+            "email": "test@mail.ru",
+            "name": "Test"
+        },
+        "hash": "GcLP0QucOebqJRenfEn5f8JmFSyAGrrL",
+        "is_public": true,
+        "width": 1600,
+        "height": 900,
+        "likes": 1,
+        "objects": [
+            {
+                "id": "d26b8959-8d1c-4df4-a9e3-f7451858fbbe",
+                "type": "image",
+                "x": 20,
+                "y": 20,
+                "width": 100,
+                "height": 100,
+                "rotation": 10,
+                "focused_by": {
+                    "id": 3,
+                    "email": "test@mail.ru",
+                    "name": "Test"
+                }
+            },
+            {
+                "id": "b328e3a6-fb74-441e-af56-d88697382ad0",
+                "type": "image",
+                "x": 20,
+                "y": 20,
+                "width": 100,
+                "height": 100,
+                "rotation": 10,
+                "focused_by": null
+            }
+        ]
+    }
+]
+```
+
+### Получение доски по hash
+
+#### Запрос
+
+* Метод: **GET**
+* Путь: **/board/{hash}**
+
+#### Ответ
+
+* Успешный ответ (200 OK):
+
+```json
+{
+    "id": 1,
+    "name": "Board 1",
+    "owner": {
+        "id": 1,
+        "email": "test@mail.ru",
+        "name": "Test"
+    },
+    "hash": "GcLP0QucOebqJRenfEn5f8JmFSyAGrrL",
+    "is_public": true,
+    "width": 1600,
+    "height": 900,
+    "likes": 1,
+    "objects": [
+        {
+            "id": "d26b8959-8d1c-4df4-a9e3-f7451858fbbe",
+            "type": "image",
+            "x": 20,
+            "y": 20,
+            "width": 100,
+            "height": 100,
+            "rotation": 10,
+            "focused_by": {
+                "id": 3,
+                "email": "test@mail.ru",
+                "name": "Test"
+            }
+        },
+        {
+            "id": "b328e3a6-fb74-441e-af56-d88697382ad0",
+            "type": "image",
+            "x": 20,
+            "y": 20,
+            "width": 100,
+            "height": 100,
+            "rotation": 10,
+            "focused_by": null
+        }
+    ]
+}
+```
+
+### Доски пользователя (с правом редактирования)
+
+#### Запрос
+
+* Метод: **GET**
+* Путь: **/users/boards**
+* Заголовки:
+    * Authorization: Bearer {token}
+
+#### Ответ
+
+* Успешный ответ (200 OK):
+
+```json
+[
+    {
+        "id": 1,
+        "name": "Board 1",
+        "owner": {
+            "id": 1,
+            "email": "test@mail.ru",
+            "name": "Test"
+        },
+        "hash": "GcLP0QucOebqJRenfEn5f8JmFSyAGrrL",
+        "is_public": true,
+        "width": 1600,
+        "height": 900,
+        "likes": 1,
+        "objects": [
+            {
+                "id": "d26b8959-8d1c-4df4-a9e3-f7451858fbbe",
+                "type": "image",
+                "x": 20,
+                "y": 20,
+                "width": 100,
+                "height": 100,
+                "rotation": 10,
+                "focused_by": {
+                    "id": 3,
+                    "email": "test@mail.ru",
+                    "name": "Test"
+                }
+            },
+            {
+                "id": "b328e3a6-fb74-441e-af56-d88697382ad0",
+                "type": "image",
+                "x": 20,
+                "y": 20,
+                "width": 100,
+                "height": 100,
+                "rotation": 10,
+                "focused_by": null
+            }
+        ]
+    }
+]
+```
+
+### Создание доски
+
+#### Запрос
+
+* Метод: **POST**
+* Путь: **/boards**
+* Заголовки:
+    * Content-Type: application/json
+    * Authorization: Bearer {token}
+* Тело:
+
+```json
+{
+    "name": "Board 1"
+}
+```
+
+* имя - обязательное, максимум 255 символов.
+
+#### Ответ
+
+* Успешный ответ (201 Created):
+
+```json
+{
+    "success": true
+}
+```
+
+### Доступ к доске
+
+#### Запрос
+
+* Метод: **GET**
+* Путь: **/boards/{board_id}**
+* Заголовки:
+    * Authorization: Bearer {token}
+
+#### Ответ
+
+* Успешный ответ (200 OK):
+
+```json
+{
+    "id": 1,
+    "name": "Board 1",
+    "owner": {
+        "id": 1,
+        "email": "test@mail.ru",
+        "name": "Test"
+    },
+    "hash": "GcLP0QucOebqJRenfEn5f8JmFSyAGrrL",
+    "is_public": true,
+    "width": 1600,
+    "height": 900,
+    "likes": 1,
+    "objects": [
+        {
+            "id": "d26b8959-8d1c-4df4-a9e3-f7451858fbbe",
+            "type": "image",
+            "x": 20,
+            "y": 20,
+            "width": 100,
+            "height": 100,
+            "rotation": 10,
+            "focused_by": {
+                "id": 3,
+                "email": "test@mail.ru",
+                "name": "Test"
+            }
+        },
+        {
+            "id": "b328e3a6-fb74-441e-af56-d88697382ad0",
+            "type": "image",
+            "x": 20,
+            "y": 20,
+            "width": 100,
+            "height": 100,
+            "rotation": 10,
+            "focused_by": null
+        }
+    ]
+}
+```
+
+### Предоставить доступ к доске пользователю по email
+
+#### Запрос
+
+* Метод: **POST**
+* Путь: **/boards/{board_id}/access**
+* Заголовки:
+    * Content-Type: application/json
+    * Authorization: Bearer {token}
+* Тело:
+
+```json
+{
+    "email": "test@mail.ru"
+}
+```
+
+#### Ответ
+
+* Успешный ответ (201 Created):
+
+```json
+{
+    "success": true
+}
+```
+
+### Сделать доску публичной
+
+#### Запрос
+
+* Метод: **POST**
+* Путь: **/boards/{board_id}/make-public**
+* Заголовки:
+    * Authorization: Bearer {token}
+
+#### Ответ
+
+* Успешный ответ (200 OK):
+
+```json
+{
+    "hash": "mAxZNLT6fYr4x2xVPNLjKM4dAQ2eCbe5"
+}
+```
+
+### Сделать доску приватной
+
+#### Запрос
+
+* Метод: **POST**
+* Путь: **/boards/{board_id}/make-private**
+* Заголовки:
+    * Authorization: Bearer {token}
+
+#### Ответ
+
+* Успешный ответ (200 OK):
+
+```json
+{
+    "success": true
+}
+```
+
+### Поставить лайк доске
+
+#### Запрос
+
+* Метод: **POST**
+* Путь: **/boards/{board_id}/like**
+* Заголовки:
+    * Authorization: Bearer {token}
+
+#### Ответ
+
+* Успешный ответ (200 OK):
+
+```json
+{
+    "success": true
+}
+```
+
+### Обновление объектов доски
+
+#### Запрос
+
+* Метод: **PATCH**
+* Путь: **/boards/{board_id}**
+* Заголовки:
+    * Content-Type: application/json
+    * Authorization: Bearer {token}
+* Тело:
+
+```json
+{
+    "id": "d26b8959-8d1c-4df4-a9e3-f7451858fbbe",
+    "type": "image",
+    "x": 20,
+    "y": 20,
+    "rotation": 10,
+    "focused_by": 3,
+    "deleted": true
+}
+```
+
+* id - необязательное (для изменения объекта).
+* type - обязательное, должно соответствовать разрешенным типам (text, image, rectangle, circle, line).
+* x - обязательное, целое значение от 0 до 1600.
+* y - обязательное, целое значение от 0 до 900.
+* width - необязательное, целое значение от 0 до 1600.
+* height - необязательное, целое значение от 0 до 900.
+* rotation - необязательное, число значение от -360 до 360.
+* focused_by - необязательное, id пользователя.
+* deleted - необязательное (для удаления объекта).
+
+#### Ответ
+
+* Успешный ответ (200 OK):
+
+```json
+[
+    {
+        "id": 1,
+        "name": "Board 1",
+        "owner": {
+            "id": 1,
+            "email": "test@mail.ru",
+            "name": "Test"
+        },
+        "hash": "GcLP0QucOebqJRenfEn5f8JmFSyAGrrL",
+        "is_public": true,
+        "width": 1600,
+        "height": 900,
+        "likes": 1,
+        "objects": [
+            {
+                "id": "d26b8959-8d1c-4df4-a9e3-f7451858fbbe",
+                "type": "image",
+                "x": 20,
+                "y": 20,
+                "width": 100,
+                "height": 100,
+                "rotation": 10,
+                "focused_by": {
+                    "id": 3,
+                    "email": "test@mail.ru",
+                    "name": "Test"
+                }
+            },
+            {
+                "id": "b328e3a6-fb74-441e-af56-d88697382ad0",
+                "type": "image",
+                "x": 20,
+                "y": 20,
+                "width": 100,
+                "height": 100,
+                "rotation": 10,
+                "focused_by": null
+            }
+        ]
+    }
+]
+```
