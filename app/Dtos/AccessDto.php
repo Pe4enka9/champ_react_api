@@ -11,7 +11,7 @@ use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Mappers\SnakeCaseMapper;
 
 #[MapName(SnakeCaseMapper::class)]
-class BoardAccessDto extends Data
+class AccessDto extends Data
 {
     public function __construct(
         #[Max(255), Email, Exists(User::class)]

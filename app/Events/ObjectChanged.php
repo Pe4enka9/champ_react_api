@@ -10,14 +10,13 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class BoardObjectChanged implements ShouldBroadcastNow
+class ObjectChanged implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public function __construct(
-        public int    $boardId,
-        public string $action, // create, update, delete, focus, blur
-        public mixed  $data,
+        public int   $boardId,
+        public array $data,
     )
     {
     }
@@ -45,7 +44,6 @@ class BoardObjectChanged implements ShouldBroadcastNow
     public function broadcastWith(): array
     {
         return [
-            'action' => $this->action,
             'data' => $this->data,
         ];
     }

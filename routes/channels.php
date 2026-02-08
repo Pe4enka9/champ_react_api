@@ -14,7 +14,7 @@ Broadcast::channel('board.{boardId}', function (User $user, int $boardId) {
     return $board->boardAccesses()->where('user_id', $user->id)->exists();
 });
 
-Broadcast::channel('public-board.{hash}', function (string $hash) {
+Broadcast::channel('public-board.{hash}', function (?User $user, string $hash) {
     $board = Board::where('hash', $hash)
         ->where('is_public', true)
         ->firstOrFail();

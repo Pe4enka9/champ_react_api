@@ -21,7 +21,8 @@ class BoardResource extends JsonResource
             'is_public' => $this->is_public,
             'width' => $this->width,
             'height' => $this->height,
-            'likes' => $this->board_likes_count ?? 0,
+            'objects' => ObjectResource::collection($this->objects),
+            'likes' => $this->likes_count ?? 0,
         ];
     }
 }

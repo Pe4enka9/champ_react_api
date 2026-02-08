@@ -4,23 +4,22 @@ namespace App\Http\Controllers\Auth;
 
 use App\Dtos\Auth\LoginDto;
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Services\LoginService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
 {
+    public function __construct(
+        private LoginService $loginService,
+    )
+    {
+    }
+
     // Авторизация
     public function login(LoginDto $dto): JsonResponse
     {
-        $user = User::where('email', $dto->email)->firstOrFail();
+        $token = ($this->loginService)($dto);
 
-        if (!Hash::check($dto->password, $user->password)) {
-            return response()->json(status: 401);
-        }
-
-        return response()->json([
-            'token' => $user->createToken('auth')->plainTextToken,
-        ]);
+        return response()->json(['token' => $token]);
     }
 }
