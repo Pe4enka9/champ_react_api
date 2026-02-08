@@ -1,0 +1,368 @@
+{
+  "info": {
+    "_postman_id": "387eb2a4-75a7-4b9a-994f-b687162c0722",
+    "name": "champ react api",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "41471161"
+  },
+  "item": [
+    {
+      "name": "Доски",
+      "item": [
+        {
+          "name": "Создание доски",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Моя доска 1\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/api/boards",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "boards"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Доски пользователя",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/api/users/boards",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "boards"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Предоставить доступ к доске пользователю по email",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"test@mail.ru\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/api/boards/1/access",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "boards",
+                "1",
+                "access"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Сделать доску публичной",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/api/boards/1/make-public",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "boards",
+                "1",
+                "make-public"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Сделать доску приватной",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/api/boards/1/make-private",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "boards",
+                "1",
+                "make-private"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Доступ к доске по hash",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/api/board/GcLP0QucOebqJRenfEn5f8JmFSyAGrrL",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "board",
+                "GcLP0QucOebqJRenfEn5f8JmFSyAGrrL"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Список публичных досок",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/api/boards",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "boards"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Поставить лайк доске",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/api/boards/1/like",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "boards",
+                "1",
+                "like"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Доступ к доске",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/api/boards/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "boards",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Обновление объектов доски",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"id\": \"d26b8959-8d1c-4df4-a9e3-f7451858fbbe\",\r\n    \"type\": \"image\",\r\n    \"x\": 20,\r\n    \"y\": 20,\r\n    \"rotation\": 10,\r\n    \"focused_by\": 3\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/api/boards/1",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "boards",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Регистрация",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"email\": \"test@mail.ru\",\r\n    \"name\": \"Test\",\r\n    \"password\": \"password1_\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{host}}/api/register",
+          "host": [
+            "{{host}}"
+          ],
+          "path": [
+            "api",
+            "register"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Авторизация",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const data = pm.response.json();\r",
+              "pm.environment.set('token', data.token);"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"email\": \"test@mail.ru\",\r\n    \"password\": \"password1_\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{host}}/api/login",
+          "host": [
+            "{{host}}"
+          ],
+          "path": [
+            "api",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ]
+}
