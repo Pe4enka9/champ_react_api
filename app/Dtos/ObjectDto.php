@@ -3,7 +3,9 @@
 namespace App\Dtos;
 
 use App\Enums\ObjectTypeEnum;
+use App\Models\User;
 use Spatie\LaravelData\Attributes\MapName;
+use Spatie\LaravelData\Attributes\Validation\Exists;
 use Spatie\LaravelData\Attributes\Validation\Max;
 use Spatie\LaravelData\Attributes\Validation\Min;
 use Spatie\LaravelData\Data;
@@ -25,6 +27,7 @@ class ObjectDto extends Data
         public ?int           $height,
         #[Min(-360), Max(360)]
         public ?float         $rotation,
+        #[Exists(User::class, 'id')]
         public ?int           $focused_by,
         public ?bool          $deleted,
     )

@@ -4,16 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Dtos\AccessDto;
 use App\Dtos\BoardDto;
+use App\Dtos\ObjectDto;
 use App\Http\Resources\BoardResource;
+use App\Http\Resources\ObjectResource;
 use App\Models\Board;
 use App\Services\BoardService;
+use App\Services\ObjectService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class BoardController extends Controller
 {
     public function __construct(
-        private BoardService $boardService,
+        private BoardService  $boardService,
+        private ObjectService $objectService,
     )
     {
     }
@@ -60,12 +64,26 @@ class BoardController extends Controller
         return response()->json(['success' => true]);
     }
 
-    // Доступ к доске
-    public function show(Board $board): JsonResponse
+    // Доступ к доске по hash
+    public function showHash(Board $board): JsonResponse
     {
         $board->loadCount('likes');
 
         return response()->json(new BoardResource($board));
+    }
+
+    // Доступ к доске
+    public function show(Board $board): JsonResponse
+    {
+        return response()->json(new BoardResource($board));
+    }
+
+    // Обновление объектов доски
+    public function update(ObjectDto $dto, Board $board): JsonResponse
+    {
+        $this->objectService->updateObjects($dto, $board);
+
+        return response()->json(ObjectResource::collection($board->objects));
     }
 
     // Поставить лайк доске
