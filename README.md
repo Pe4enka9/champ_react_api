@@ -551,7 +551,7 @@
 #### Запрос
 
 * Метод: **GET**
-* Путь: **/boards/{board_id}/generate-link**
+* Путь: **/boards/{public_link}/public**
 
 #### Ответ
 
