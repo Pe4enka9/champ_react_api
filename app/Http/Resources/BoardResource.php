@@ -18,6 +18,7 @@ class BoardResource extends JsonResource
             'name' => $this->name,
             'owner' => new UserResource($this->owner),
             'hash' => $this->hash,
+            'public_link' => $this->public_link,
             'is_public' => $this->is_public,
             'width' => $this->width,
             'height' => $this->height,

@@ -12,6 +12,7 @@ use Illuminate\Support\Collection;
  * @property string $name
  * @property int $owner_id
  * @property string|null $hash
+ * @property string|null $public_link
  * @property boolean $is_public
  * @property int $width
  * @property int $height

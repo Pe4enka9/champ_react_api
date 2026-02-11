@@ -89,4 +89,15 @@ class BoardService
             throw new AccessDeniedException();
         }
     }
+
+    // Генерации публичной ссылки
+    public function generateLink(
+        Board $board,
+        User  $user,
+    ): void
+    {
+        $this->checkOwner($board, $user);
+        $publicLink = uniqid("board_{$board->id}_{$user->id}_");
+        $board->update(['public_link' => $publicLink]);
+    }
 }

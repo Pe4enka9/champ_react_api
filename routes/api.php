@@ -11,6 +11,7 @@ Route::post('/login', [LoginController::class, 'login'])->name('login');
 
 Route::get('/boards', [BoardController::class, 'index']);
 Route::get('/board/{board:hash}', [BoardController::class, 'showHash']);
+Route::get('/boards/{board:public_link}/public', [BoardController::class, 'showPublicLink']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/users/boards', [UserController::class, 'boards']);
@@ -22,4 +23,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/boards/{board}/make-public', [BoardController::class, 'makePublic']);
     Route::post('/boards/{board}/make-private', [BoardController::class, 'makePrivate']);
     Route::post('/boards/{board}/like', [BoardController::class, 'like']);
+    Route::post('/boards/{board}/generate-link', [BoardController::class, 'generateLink']);
 });

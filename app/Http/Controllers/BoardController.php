@@ -118,4 +118,24 @@ class BoardController extends Controller
 
         return response()->json(['success' => true]);
     }
+
+    // Генерация публичной ссылки
+    public function generateLink(
+        Board   $board,
+        Request $request,
+    ): JsonResponse
+    {
+        $this->boardService->generateLink(
+            $board,
+            $request->user(),
+        );
+
+        return response()->json(['success' => true]);
+    }
+
+    // Получение доски по публичной ссылке
+    public function showPublicLink(Board $board): JsonResponse
+    {
+        return response()->json(new BoardResource($board));
+    }
 }
