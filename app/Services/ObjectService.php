@@ -18,8 +18,8 @@ class ObjectService
 
     public function updateObjects(
         Board     $board,
-        User      $user,
         ObjectDto $dto,
+        User      $user,
     ): void
     {
         $this->boardService->checkAccess($board, $user);

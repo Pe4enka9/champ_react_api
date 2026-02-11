@@ -13,8 +13,8 @@ class BoardService
 {
     // Создание доски
     public function create(
-        User     $user,
         BoardDto $dto,
+        User     $user,
     ): void
     {
         $board = Board::create([
@@ -28,8 +28,8 @@ class BoardService
     // Предоставить доступ к доске пользователю по email
     public function access(
         Board     $board,
-        User      $user,
         AccessDto $dto,
+        User      $user,
     ): void
     {
         $this->checkOwner($board, $user);

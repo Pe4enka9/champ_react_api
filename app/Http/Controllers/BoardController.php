@@ -38,7 +38,10 @@ class BoardController extends Controller
         Request  $request,
     ): JsonResponse
     {
-        $this->boardService->create($request->user(), $dto);
+        $this->boardService->create(
+            $dto,
+            $request->user(),
+        );
 
         return response()->json(['success' => true], 201);
     }
@@ -50,7 +53,11 @@ class BoardController extends Controller
         Request   $request,
     ): JsonResponse
     {
-        $this->boardService->access($board, $request->user(), $dto);
+        $this->boardService->access(
+            $board,
+            $dto,
+            $request->user(),
+        );
 
         return response()->json(['success' => true], 201);
     }
@@ -61,7 +68,10 @@ class BoardController extends Controller
         Request $request,
     ): JsonResponse
     {
-        $hash = $this->boardService->makePublic($board, $request->user());
+        $hash = $this->boardService->makePublic(
+            $board,
+            $request->user(),
+        );
 
         return response()->json(['hash' => $hash]);
     }
@@ -72,7 +82,10 @@ class BoardController extends Controller
         Request $request,
     ): JsonResponse
     {
-        $this->boardService->makePrivate($board, $request->user());
+        $this->boardService->makePrivate(
+            $board,
+            $request->user(),
+        );
 
         return response()->json(['success' => true]);
     }
@@ -91,7 +104,10 @@ class BoardController extends Controller
         Request $request,
     ): JsonResponse
     {
-        $this->boardService->checkAccess($board, $request->user());
+        $this->boardService->checkAccess(
+            $board,
+            $request->user(),
+        );
 
         return response()->json(new BoardResource($board));
     }
@@ -103,7 +119,11 @@ class BoardController extends Controller
         Request   $request,
     ): JsonResponse
     {
-        $this->objectService->updateObjects($board, $request->user(), $dto);
+        $this->objectService->updateObjects(
+            $board,
+            $dto,
+            $request->user(),
+        );
 
         return response()->json(ObjectResource::collection($board->objects));
     }
