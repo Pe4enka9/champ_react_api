@@ -22,7 +22,7 @@ class BoardResource extends JsonResource
             'width' => $this->width,
             'height' => $this->height,
             'likes' => $this->likes_count ?? 0,
-            'objects' => ObjectResource::collection($this->objects),
+            'objects' => ObjectResource::collection($this->objects ?? collect()),
         ];
     }
 }

@@ -13,6 +13,7 @@ class UserController extends Controller
     {
         $editableBoards = $request->user()
             ->editableBoards()
+            ->with('owner')
             ->withCount('likes')
             ->get();
 
