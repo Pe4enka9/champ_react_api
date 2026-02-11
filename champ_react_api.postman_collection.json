@@ -253,6 +253,49 @@
             }
           },
           "response": []
+        },
+        {
+          "name": "Генерация публичной ссылки",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/api/boards/1/generate-link",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "boards",
+                "1",
+                "generate-link"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Получение доски по публичной ссылке",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/api/boards/board_1_1_698c8fce067d6/public",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "api",
+                "boards",
+                "board_1_1_698c8fce067d6",
+                "public"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },

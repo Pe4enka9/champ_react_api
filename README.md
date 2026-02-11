@@ -526,3 +526,53 @@
     }
 ]
 ```
+
+### Генерация публичной ссылки
+
+#### Запрос
+
+* Метод: **POST**
+* Путь: **/boards/{board_id}/generate-link**
+* Заголовки:
+    * Authorization: Bearer {token}
+
+#### Ответ
+
+* Успешный ответ (200 OK):
+
+```json
+{
+    "public_link": "board_1_1_698c8fce067d6"
+}
+```
+
+### Получение доски по публичной ссылке
+
+#### Запрос
+
+* Метод: **GET**
+* Путь: **/boards/{board_id}/generate-link**
+
+#### Ответ
+
+* Успешный ответ (200 OK):
+
+```json
+{
+    "id": 1,
+    "name": "Моя доска 1",
+    "owner": {
+        "id": 1,
+        "email": "test@mail.ru",
+        "name": "Test"
+    },
+    "hash": null,
+    "public_link": "board_1_1_698c8fce067d6",
+    "is_public": false,
+    "width": 1600,
+    "height": 900,
+    "likes": 0,
+    "liked_by_current_user": false,
+    "objects": []
+}
+```
