@@ -11,10 +11,15 @@ class UserController extends Controller
     // Доски пользователя (с правом редактирования)
     public function boards(Request $request): JsonResponse
     {
-        $editableBoards = $request->user()
+        $user = $request->user();
+
+        $editableBoards = $user
             ->editableBoards()
             ->with('owner')
-            ->withCount('likes')
+            ->withCount([
+                'likes',
+                'likes as liked_by_current_user' => fn($q) => $q->where('user_id', $user->id)
+            ])
             ->get();
 
         return response()->json(BoardResource::collection($editableBoards));

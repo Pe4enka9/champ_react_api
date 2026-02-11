@@ -22,6 +22,7 @@ class BoardResource extends JsonResource
             'width' => $this->width,
             'height' => $this->height,
             'likes' => $this->likes_count ?? 0,
+            'liked_by_current_user' => (bool)$this->liked_by_current_user,
             'objects' => ObjectResource::collection($this->objects ?? collect()),
         ];
     }
