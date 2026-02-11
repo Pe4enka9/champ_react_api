@@ -94,10 +94,12 @@ class BoardService
     public function generateLink(
         Board $board,
         User  $user,
-    ): void
+    ): string
     {
         $this->checkOwner($board, $user);
         $publicLink = uniqid("board_{$board->id}_{$user->id}_");
         $board->update(['public_link' => $publicLink]);
+
+        return $publicLink;
     }
 }

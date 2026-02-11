@@ -145,12 +145,12 @@ class BoardController extends Controller
         Request $request,
     ): JsonResponse
     {
-        $this->boardService->generateLink(
+        $publicLink = $this->boardService->generateLink(
             $board,
             $request->user(),
         );
 
-        return response()->json(['success' => true]);
+        return response()->json(['public_link' => $publicLink]);
     }
 
     // Получение доски по публичной ссылке
