@@ -25,9 +25,7 @@ class BoardController extends Controller
     // Все публичные доски
     public function index(): JsonResponse
     {
-        $boards = Board::where('is_public', true)
-            ->withCount('likes')
-            ->get();
+        $boards = Board::where('is_public', true)->get();
 
         return response()->json(BoardResource::collection($boards));
     }
@@ -93,8 +91,6 @@ class BoardController extends Controller
     // Доступ к доске по hash
     public function showHash(Board $board): JsonResponse
     {
-        $board->loadCount('likes');
-
         return response()->json(new BoardResource($board));
     }
 

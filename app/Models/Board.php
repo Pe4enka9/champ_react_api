@@ -31,6 +31,12 @@ class Board extends Model
         'objects' => 'array',
     ];
 
+    protected $with = ['owner'];
+
+    protected $withCount = ['likes'];
+
+    protected $appends = ['liked_by_current_user'];
+
     public function owner(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -44,5 +50,10 @@ class Board extends Model
     public function likes(): HasMany
     {
         return $this->hasMany(BoardLike::class, 'board_id');
+    }
+
+    public function getLikedByCurrentUserAttribute(): bool
+    {
+        return $this->likes->contains('user_id', auth('sanctum')->id());
     }
 }
